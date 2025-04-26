@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "798742222391",
+    "project_id": "tuition-tracker-43bdc",
+    "storage_bucket": "tuition-tracker-43bdc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798742222391:android:e9010393233f01028c91b2",
+        "android_client_info": {
+          "package_name": "com.example.smart_tuition_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUV1a1T3xm4CObtWR-gPSbLx0TDFWZwsk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
