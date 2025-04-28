@@ -9,6 +9,11 @@ class LoginInitial extends LoginState {}
 
 class LoginPageLoadedState extends LoginState {}
 
-class LoginFailureState extends LoginState {}
+class LoginFailureState extends LoginState {
+  final String error;
+  LoginFailureState({required this.error});
+}
 
 class LoginNavigateToSignUp extends LoginActionState {}
+
+class LoginLoadingState extends LoginState {}
