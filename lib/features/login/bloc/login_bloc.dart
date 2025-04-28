@@ -7,12 +7,22 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginInitial());
+  LoginBloc() : super(LoginInitial()) {
+    on<LoginInitialEvent>(_onLoginInitialEvent);
+    on<LoginNavigateToSignUpButtonClicked>(_LoginNavigateToSignUpButtonClicked);
+  }
 
-  @override
-  Stream<LoginState> mapEventToState(
-    LoginEvent event,
-  ) async* {
-    // TODO: implement mapEventToState
+  FutureOr<void> _onLoginInitialEvent(
+    LoginInitialEvent event,
+    Emitter<LoginState> emit,
+  ) {
+    emit(LoginPageLoadedState());
+  }
+
+  FutureOr<void> _LoginNavigateToSignUpButtonClicked(
+    LoginNavigateToSignUpButtonClicked event,
+    Emitter<LoginState> emit,
+  ) {
+    emit(LoginNavigateToSignUp());
   }
 }

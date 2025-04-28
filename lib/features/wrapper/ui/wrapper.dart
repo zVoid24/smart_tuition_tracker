@@ -4,8 +4,14 @@ import 'package:smart_tuition_tracker/features/wrapper/bloc/wrapper_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_tuition_tracker/home%20screen/ui/home_screen.dart';
 
-class Wrapper extends StatelessWidget {
-  Wrapper({super.key});
+class Wrapper extends StatefulWidget {
+  const Wrapper({super.key});
+
+  @override
+  State<Wrapper> createState() => _WrapperState();
+}
+
+class _WrapperState extends State<Wrapper> {
   final WrapperBloc _wrapperBloc = WrapperBloc();
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,7 @@ class Wrapper extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is Authenticated) {
-          return HomeScreen(); 
+          return HomeScreen();
         } else {
           return const Login();
         }
