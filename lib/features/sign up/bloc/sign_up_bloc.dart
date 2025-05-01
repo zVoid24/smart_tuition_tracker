@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:smart_tuition_tracker/database/authentication.dart';
 
 part 'sign_up_event.dart';
@@ -28,7 +27,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     emit(SignUpLoadingState());
     try {
       final db = Authentication();
-      debugPrint(event.role + 'delulu');
+      debugPrint('${event.role}delulu');
       db.signUp(event.email, event.password, event.name, event.role);
       print('Success');
       emit(SignUpSuccessState());

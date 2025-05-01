@@ -53,4 +53,20 @@ class Authentication {
       throw (e.toString());
     }
   }
+
+  Future<void> resetPassword(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      throw (e.toString());
+    }
+  }
+
+  Future<void> logOut() async {
+    try {
+      await _firebaseAuth.signOut();
+    } catch (e) {
+      throw (e.toString());
+    }
+  }
 }

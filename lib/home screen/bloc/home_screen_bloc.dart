@@ -2,17 +2,35 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:smart_tuition_tracker/database/authentication.dart';
+import 'package:smart_tuition_tracker/features/wrapper/bloc/wrapper_bloc.dart';
 
 part 'home_screen_event.dart';
 part 'home_screen_state.dart';
 
 class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
-  HomeScreenBloc() : super(HomeScreenInitial());
+  HomeScreenBloc() : super(HomeScreenInitial()) {
+    on<HomeScreenInitialEvent>(_onHomeScreenInitialEvent);
+    on<HomeScreenLogOutEvent>(_onHomeScreenLogOutEvent);
+  }
 
-  @override
-  Stream<HomeScreenState> mapEventToState(
-    HomeScreenEvent event,
-  ) async* {
-    // TODO: implement mapEventToState
+  FutureOr<void> _onHomeScreenInitialEvent(
+    HomeScreenInitialEvent event,
+    Emitter<HomeScreenState> emit,
+  ) {
+    emit(HomeScreenLoadedState());
+  }
+
+  FutureOr<void> _onHomeScreenLogOutEvent(
+    HomeScreenLogOutEvent event,
+    Emitter<HomeScreenState> emit,
+  ) {
+    emit(HomeScreenLoadingState());
+    try {
+      final db = Authentication();
+      db.logOut();
+    } catch (e) {
+      emit(HomeScreenLogOutFailure(error: e.toString()));
+    }
   }
 }

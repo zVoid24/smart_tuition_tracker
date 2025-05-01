@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_tuition_tracker/features/forget%20password/ui/forget_password.dart';
 import 'package:smart_tuition_tracker/features/login/bloc/login_bloc.dart';
 import 'package:smart_tuition_tracker/features/sign%20up/ui/sign_up.dart';
 
@@ -61,6 +62,11 @@ class _LoginState extends State<Login> {
               context,
               MaterialPageRoute(builder: (context) => SignUp()),
             );
+          } else if (state is LoginNavigateToForgetPasswordState) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ForgetPassword()),
+            );
           }
         },
         builder: (context, state) {
@@ -99,10 +105,9 @@ class _LoginState extends State<Login> {
                           keyboardType: TextInputType.emailAddress,
                         ),
                       ),
-                      const SizedBox(height: 16.0), // Spacing
-                      // Password TextField
+                      const SizedBox(height: 16.0),
                       SizedBox(
-                        width: double.infinity, // Constrain width to parent
+                        width: double.infinity,
                         child: TextField(
                           controller: _passwordController,
                           decoration: InputDecoration(
@@ -137,7 +142,11 @@ class _LoginState extends State<Login> {
                       Align(
                         alignment: Alignment.bottomRight,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _loginBloc.add(
+                              LoginNavigateToForgetPasswordEvent(),
+                            );
+                          },
                           child: Text(
                             "Forget Password?",
                             style: TextStyle(
@@ -148,7 +157,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      // Login Button (Example)
+
                       ElevatedButton(
                         onPressed: () {
                           _loginBloc.add(

@@ -12,6 +12,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginInitialEvent>(_onLoginInitialEvent);
     on<LoginNavigateToSignUpButtonClicked>(_LoginNavigateToSignUpButtonClicked);
     on<LoginButtonClickedEvent>(_onLoginButtonClickedEvent);
+    on<LoginNavigateToForgetPasswordEvent>(
+      _onLoginNavigateToForgetPasswordEvent,
+    );
   }
 
   FutureOr<void> _onLoginInitialEvent(
@@ -40,5 +43,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } catch (e) {
       emit(LoginFailureState(error: e.toString()));
     }
+  }
+
+  FutureOr<void> _onLoginNavigateToForgetPasswordEvent(
+    LoginNavigateToForgetPasswordEvent event,
+    Emitter<LoginState> emit,
+  ) {
+    emit(LoginNavigateToForgetPasswordState());
   }
 }

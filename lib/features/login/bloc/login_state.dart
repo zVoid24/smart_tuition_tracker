@@ -17,3 +17,5 @@ class LoginFailureState extends LoginState {
 class LoginNavigateToSignUp extends LoginActionState {}
 
 class LoginLoadingState extends LoginState {}
+
+class LoginNavigateToForgetPasswordState extends LoginActionState{}
