@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_tuition_tracker/features/home/ui/home.dart';
 import 'package:smart_tuition_tracker/home%20screen/bloc/home_screen_bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  HomeScreenBloc _homeScreenBloc = HomeScreenBloc();
+  final HomeScreenBloc _homeScreenBloc = HomeScreenBloc();
 
   final List<String> appBar = ['Home', 'Student List', 'Profile'];
   int selectedIndex = 0;
@@ -31,14 +33,51 @@ class _HomeScreenState extends State<HomeScreen> {
         // TODO: implement listener
       },
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(title: Text(appBar[selectedIndex])),
-          drawer: Drawer(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+        if (state is HomeScreenLoadingState) {
+          return Center(
+            child: CircularProgressIndicator(color: Color(0xFFA12F2F)),
+          );
+        }
+        if (state is HomeScreenLoadedState) {
+          final userData = state.data;
+          return Scaffold(
+            appBar: AppBar(title: Text(appBar[selectedIndex])),
+            drawer: Drawer(
               child: ListView(
+                padding: EdgeInsets.zero,
                 children: [
-                  DrawerHeader(child: Text("Hello!")),
+                  DrawerHeader(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundImage: CachedNetworkImageProvider(
+                            'https://robohash.org/${userData.name}.png?set=set1',
+                          ),
+                        ),
+                        Divider(thickness: 1),
+                        Text(
+                          '${userData.name} - ${userData.role}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                        ),
+                        Text(
+                          userData.email,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                    decoration: BoxDecoration(color: const Color(0xFFA12F2F)),
+                  ),
                   ListTile(
                     leading: Icon(Icons.logout),
                     title: Text('Log Out'),
@@ -47,16 +86,43 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-          ),
-          body: () {
-            if (state is HomeScreenLoadingState) {
-              return CircularProgressIndicator(color: Color(0xFFA12F2F));
-            } else if (selectedIndex == 0) {
-            } else if (selectedIndex == 1) {
-            } else if (selectedIndex == 2) {}
-          }(),
-        );
+            body: () {
+              if (selectedIndex == 0) {
+                return Home();
+              } else if (selectedIndex == 1) {
+                return Center(child: Text('Student List Screen'));
+              } else if (selectedIndex == 2) {
+                return Center(child: Text('Profile Screen'));
+              }
+              return Container();
+            }(),
+            bottomNavigationBar: BottomNavigationBar(
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.list),
+                  label: 'Student List',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
+              ],
+              currentIndex: selectedIndex,
+              selectedItemColor: const Color(0xFFA12F2F),
+              unselectedItemColor: Colors.grey,
+              onTap: _onItemTapped,
+            ),
+          );
+        }
+        return Scaffold(body: Center(child: Text('Error: Invalid State')));
       },
     );
+  }
+
+  void _onItemTapped(int value) {
+    setState(() {
+      selectedIndex = value;
+    });
   }
 }

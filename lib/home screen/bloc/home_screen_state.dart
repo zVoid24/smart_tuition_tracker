@@ -7,7 +7,10 @@ abstract class HomeScreenActionState extends HomeScreenState {}
 
 class HomeScreenInitial extends HomeScreenState {}
 
-class HomeScreenLoadedState extends HomeScreenState {}
+class HomeScreenLoadedState extends HomeScreenState {
+  final UserInformation data;
+  HomeScreenLoadedState({required this.data});
+}
 
 class HomeScreenLoadingState extends HomeScreenState {}
 

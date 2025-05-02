@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smart_tuition_tracker/database/authentication.dart';
-import 'package:smart_tuition_tracker/features/wrapper/bloc/wrapper_bloc.dart';
+import 'package:smart_tuition_tracker/models/user.dart';
 
 part 'home_screen_event.dart';
 part 'home_screen_state.dart';
@@ -17,8 +17,11 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
   FutureOr<void> _onHomeScreenInitialEvent(
     HomeScreenInitialEvent event,
     Emitter<HomeScreenState> emit,
-  ) {
-    emit(HomeScreenLoadedState());
+  ) async {
+    emit(HomeScreenLoadingState());
+    final db = Authentication();
+    final info = await db.getUserData();
+    emit(HomeScreenLoadedState(data: info));
   }
 
   FutureOr<void> _onHomeScreenLogOutEvent(

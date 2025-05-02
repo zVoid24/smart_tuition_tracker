@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smart_tuition_tracker/models/user.dart';
 
 class Authentication {
   final _firebaseAuth = FirebaseAuth.instance;
@@ -68,5 +69,25 @@ class Authentication {
     } catch (e) {
       throw (e.toString());
     }
+  }
+
+  Future<UserInformation> getUserData() async {
+    final userData = await _firebaseAuth.currentUser;
+    if (userData != null) {
+      final CollectionReference firebaseCollection = FirebaseFirestore.instance
+          .collection('student');
+      final userSnapshot = await firebaseCollection.doc(userData.uid).get();
+      if (userSnapshot.exists) {
+        final data = userSnapshot.data() as Map<String, dynamic>;
+        return UserInformation(
+          name: data['name'] ?? 'Unknown',
+          email: data['email'] ?? 'Unknown',
+          role: data['role'] ?? 'Unknown'
+        );
+      } else {
+        throw Exception('User data not found in Firestore.');
+      }
+    }
+    throw Exception('No authenticated user found.');
   }
 }

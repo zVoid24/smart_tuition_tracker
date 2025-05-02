@@ -10,8 +10,8 @@ class ForgetPassword extends StatefulWidget {
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> {
-  ForgetPasswordBloc _forgetPasswordBloc = ForgetPasswordBloc();
-  TextEditingController _emailController = TextEditingController();
+  final ForgetPasswordBloc _forgetPasswordBloc = ForgetPasswordBloc();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   void initState() {
