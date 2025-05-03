@@ -72,7 +72,7 @@ class Authentication {
   }
 
   Future<UserInformation> getUserData() async {
-    final userData = await _firebaseAuth.currentUser;
+    final userData = _firebaseAuth.currentUser;
     if (userData != null) {
       final CollectionReference firebaseCollection = FirebaseFirestore.instance
           .collection('student');

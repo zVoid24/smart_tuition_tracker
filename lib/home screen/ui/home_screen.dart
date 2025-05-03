@@ -47,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.zero,
                 children: [
                   DrawerHeader(
+                    decoration: BoxDecoration(color: const Color(0xFFA12F2F)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    decoration: BoxDecoration(color: const Color(0xFFA12F2F)),
                   ),
                   ListTile(
                     leading: Icon(Icons.logout),
