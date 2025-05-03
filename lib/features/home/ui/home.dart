@@ -26,7 +26,26 @@ class _HomeState extends State<Home> {
         // TODO: implement listener
       },
       builder: (context, state) {
-        return Container();
+        switch (state.runtimeType) {
+          case HomeLoadedState:
+            return SingleChildScrollView(
+              padding: EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            );
+          default:
+            return const Center(child: Text("Unknown State"));
+        }
       },
     );
   }

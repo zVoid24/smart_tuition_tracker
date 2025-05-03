@@ -74,15 +74,29 @@ class Authentication {
   Future<UserInformation> getUserData() async {
     final userData = _firebaseAuth.currentUser;
     if (userData != null) {
-      final CollectionReference firebaseCollection = FirebaseFirestore.instance
+      final CollectionReference firebaseCollectionstudent = FirebaseFirestore
+          .instance
           .collection('student');
-      final userSnapshot = await firebaseCollection.doc(userData.uid).get();
-      if (userSnapshot.exists) {
-        final data = userSnapshot.data() as Map<String, dynamic>;
+      final CollectionReference firebaseCollectionteacher = FirebaseFirestore
+          .instance
+          .collection('teacher');
+      final userSnapshotstudent =
+          await firebaseCollectionstudent.doc(userData.uid).get();
+      final userSnapshotteacher =
+          await firebaseCollectionteacher.doc(userData.uid).get();
+      if (userSnapshotstudent.exists) {
+        final data = userSnapshotstudent.data() as Map<String, dynamic>;
         return UserInformation(
           name: data['name'] ?? 'Unknown',
           email: data['email'] ?? 'Unknown',
-          role: data['role'] ?? 'Unknown'
+          role: 'Student',
+        );
+      } else if (userSnapshotteacher.exists) {
+        final data = userSnapshotteacher.data() as Map<String, dynamic>;
+        return UserInformation(
+          name: data['name'] ?? 'Unknown',
+          email: data['email'] ?? 'Unknown',
+          role: 'Teacher',
         );
       } else {
         throw Exception('User data not found in Firestore.');

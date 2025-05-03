@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final HomeScreenBloc _homeScreenBloc = HomeScreenBloc();
 
-  final List<String> appBar = ['Home', 'Student List', 'Profile'];
+  final List<String> appBar = ['Home', 'Inbox', 'Student List', 'Profile'];
   int selectedIndex = 0;
 
   @override
@@ -63,8 +63,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           '${userData.name} - ${userData.role}',
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 15,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           userData.email,
@@ -90,8 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
               if (selectedIndex == 0) {
                 return Home();
               } else if (selectedIndex == 1) {
-                return Center(child: Text('Student List Screen'));
+                return Center(child: Text('Inbox'));
               } else if (selectedIndex == 2) {
+                return Center(child: Text('Student List Screen'));
+              } else if (selectedIndex == 3) {
                 return Center(child: Text('Profile Screen'));
               }
               return Container();
@@ -99,6 +104,10 @@ class _HomeScreenState extends State<HomeScreen> {
             bottomNavigationBar: BottomNavigationBar(
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.message),
+                  label: 'Inbox',
+                ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.list),
                   label: 'Student List',
