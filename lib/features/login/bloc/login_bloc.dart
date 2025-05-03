@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_tuition_tracker/database/authentication.dart';
+import 'package:smart_tuition_tracker/database/user_database.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';

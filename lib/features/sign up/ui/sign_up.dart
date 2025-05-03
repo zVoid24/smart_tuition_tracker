@@ -39,7 +39,9 @@ class _SignUpState extends State<SignUp> {
       ),
       body: BlocConsumer<SignUpBloc, SignUpState>(
         bloc: _signUpBloc,
-        listenWhen: (previous, current) => current is SignUpActionState,
+        listenWhen:
+            (previous, current) =>
+                current is SignUpActionState || current is SignUpFailureState,
         buildWhen: (previous, current) => current is! SignUpActionState,
         listener: (context, state) {
           if (state is SignUpSuccessState) {
@@ -47,6 +49,10 @@ class _SignUpState extends State<SignUp> {
               context,
               MaterialPageRoute(builder: (context) => Wrapper()),
               (route) => false,
+            );
+          } else if (state is SignUpFailureState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error), backgroundColor: Colors.red),
             );
           }
         },

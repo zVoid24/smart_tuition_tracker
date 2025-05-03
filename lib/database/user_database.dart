@@ -41,8 +41,11 @@ class Authentication {
     String role,
   ) async {
     try {
+      // Step 1: Create user with Firebase Authentication
       UserCredential result = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
+
+      // Step 2: Store user data in Firestore
       final CollectionReference firebaseCollection = FirebaseFirestore.instance
           .collection(role);
       await firebaseCollection.doc(result.user?.uid).set({
@@ -50,8 +53,43 @@ class Authentication {
         'email': email,
         'role': role,
       });
+    } on FirebaseAuthException catch (e) {
+      // Handle Firebase Authentication errors
+      String errorMessage;
+      switch (e.code) {
+        case 'email-already-in-use':
+          errorMessage = 'The email address is already in use.';
+          break;
+        case 'invalid-email':
+          errorMessage = 'The email address is invalid.';
+          break;
+        case 'weak-password':
+          errorMessage = 'The password is too weak.';
+          break;
+        default:
+          errorMessage = 'Authentication error: ${e.message}';
+      }
+      print('FirebaseAuthException: $errorMessage'); // Debug log
+      throw Exception(errorMessage);
+    } on FirebaseException catch (e) {
+      // Handle Firestore errors
+      String errorMessage;
+      switch (e.code) {
+        case 'permission-denied':
+          errorMessage = 'Permission denied. Please check Firestore rules.';
+          break;
+        case 'unavailable':
+          errorMessage = 'Firestore is unavailable. Please check your network.';
+          break;
+        default:
+          errorMessage = 'Firestore error: ${e.message}';
+      }
+      print('FirebaseException: $errorMessage'); // Debug log
+      throw Exception(errorMessage);
     } catch (e) {
-      throw (e.toString());
+      // Handle unexpected errors
+      print('Unexpected error: $e'); // Debug log
+      throw Exception('An unexpected error occurred during sign-up: $e');
     }
   }
 

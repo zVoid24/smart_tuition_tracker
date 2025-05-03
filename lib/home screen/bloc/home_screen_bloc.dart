@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:smart_tuition_tracker/database/authentication.dart';
+import 'package:smart_tuition_tracker/database/user_database.dart';
 import 'package:smart_tuition_tracker/models/user.dart';
 
 part 'home_screen_event.dart';

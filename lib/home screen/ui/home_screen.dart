@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           '${userData.name} - ${userData.role}',
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 2,
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             body: () {
               if (selectedIndex == 0) {
-                return Home();
+                return Home(info: userData);
               } else if (selectedIndex == 1) {
                 return Center(child: Text('Inbox'));
               } else if (selectedIndex == 2) {
