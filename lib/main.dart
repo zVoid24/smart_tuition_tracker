@@ -12,20 +12,20 @@ void main() async {
       theme: ThemeData(
         // Define AppBar color
         appBarTheme: AppBarTheme(
-          backgroundColor: Color(0xFFA12F2F), // AppBar background color
+          backgroundColor: Colors.black, // AppBar background color
           foregroundColor: Colors.white, // AppBar text/icon color
           titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
         // Define Button styles
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFA12F2F), // Button background color
+            backgroundColor: Colors.black, // Button background color
             foregroundColor: Colors.white, // Button text/icon color
           ),
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            foregroundColor: Color(0xFFA12F2F), // TextButton text color
+            foregroundColor: Colors.black, // TextButton text color
           ),
         ),
         // Define Text style

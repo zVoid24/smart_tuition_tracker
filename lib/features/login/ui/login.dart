@@ -13,6 +13,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final LoginBloc _loginBloc = LoginBloc();
+  final _formKey = GlobalKey<FormState>();
   bool isObscured = true;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -20,7 +21,16 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     _loginBloc.add(LoginInitialEvent());
+    //precacheImage(AssetImage('assets/images/app_logo.png'), context);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Now it's safe to use context here
+    precacheImage(AssetImage('assets/images/app_logo.png'), context);
   }
 
   @override
@@ -33,185 +43,311 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Login Page",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Color(0xFFA12F2F),
-        foregroundColor: Colors.white,
-      ),
-      body: BlocConsumer<LoginBloc, LoginState>(
-        bloc: _loginBloc,
-        listenWhen:
-            (previous, current) =>
-                current is LoginActionState || current is LoginFailureState,
-        buildWhen: (previous, current) => current is! LoginActionState,
-        listener: (context, state) {
-          if (state is LoginFailureState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-                duration: const Duration(seconds: 2),
-                backgroundColor: Colors.red,
-              ),
-            );
-          } else if (state is LoginNavigateToSignUp) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SignUp()),
-            );
-          } else if (state is LoginNavigateToForgetPasswordState) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ForgetPassword()),
-            );
-          }
-        },
-        builder: (context, state) {
-          switch (state.runtimeType) {
-            case LoginLoadingState:
-              return Center(
-                child: CircularProgressIndicator(color: Color(0xFFA12F2F)),
+    return SafeArea(
+      child: Scaffold(
+        body: BlocConsumer<LoginBloc, LoginState>(
+          bloc: _loginBloc,
+          listenWhen:
+              (previous, current) =>
+                  current is LoginActionState || current is LoginFailureState,
+          buildWhen: (previous, current) => current is! LoginActionState,
+          listener: (context, state) {
+            if (state is LoginFailureState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.error),
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: Colors.red,
+                ),
               );
-            case LoginFailureState:
-            case LoginPageLoadedState:
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Center(
-                  child: ListView(
-                    //mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('assets/images/tutor.png'),
-                      SizedBox(height: 10),
-                      SizedBox(
-                        width: double.infinity, // Constrain width to parent
-                        child: TextField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                            hintText: "example@email.com",
-                            hintStyle: const TextStyle(color: Colors.grey),
-                            labelText: "Email",
-                            border: OutlineInputBorder(
-                              //borderSide: BorderSide(color: Color(0xFFA12F2F)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFA12F2F)),
-                              borderRadius: BorderRadius.circular(10),
+            } else if (state is LoginNavigateToSignUp) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignUp()),
+              );
+            } else if (state is LoginNavigateToForgetPasswordState) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ForgetPassword()),
+              );
+            }
+          },
+          builder: (context, state) {
+            switch (state.runtimeType) {
+              case LoginLoadingState:
+                return Center(
+                  child: CircularProgressIndicator(color: Colors.black),
+                );
+              case LoginFailureState:
+              case LoginPageLoadedState:
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(25),
+                    child: Column(
+                      //mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/app_logo.png',
+                          height: 100,
+                          frameBuilder: (
+                            context,
+                            child,
+                            frame,
+                            wasSynchronouslyLoaded,
+                          ) {
+                            if (frame == null) {
+                              return SizedBox(); // Show loading indicator
+                            }
+                            return child;
+                          },
+                        ),
+                        //SizedBox(height: 0),
+                        Center(
+                          child: Text(
+                            "ClassSync",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          keyboardType: TextInputType.emailAddress,
                         ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      SizedBox(
-                        width: double.infinity,
-                        child: TextField(
-                          controller: _passwordController,
-                          decoration: InputDecoration(
-                            hintText: "password",
-                            hintStyle: const TextStyle(color: Colors.grey),
-                            labelText: "Password",
-                            border: OutlineInputBorder(
-                              //borderSide: BorderSide(color: Color(0xFFA12F2F)),
-                              borderRadius: BorderRadius.circular(10),
+                        Center(
+                          child: Text(
+                            "Manage Your Tuition Journey",
+                            style: TextStyle(
+                              fontSize: 15,
+                              //fontWeight: FontWeight.bold,
+                              color: Colors.grey,
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFA12F2F)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isObscured = !isObscured;
-                                });
-                              },
-                              icon: Icon(
-                                isObscured
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                          ),
+                        ),
+                        SizedBox(height: 50),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  'Email',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please Enter Email';
+                                  }
+                                  if (!value.contains('@')) {
+                                    return 'Enter a valid email';
+                                  }
+                                  return null;
+                                },
+                                controller: _emailController,
+                                decoration: InputDecoration(
+                                  hintText: 'example@email.com',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  prefixIcon: Icon(Icons.email),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  'Passsword',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please write your password';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                controller: _passwordController,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.key),
+                                  suffixIcon: InkWell(
+                                    child:
+                                        isObscured
+                                            ? Icon(Icons.visibility)
+                                            : Icon(Icons.visibility_off),
+                                    onTap:
+                                        () => setState(() {
+                                          isObscured = !isObscured;
+                                        }),
+                                  ),
+                                  hintText: '••••••••',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                ),
+                                obscureText: isObscured,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: TextButton(
+                            onPressed: () {
+                              _loginBloc.add(
+                                LoginNavigateToForgetPasswordEvent(),
+                              );
+                            },
+                            child: Text(
+                              "Forget Password?",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
                               ),
                             ),
                           ),
-                          obscureText: isObscured,
                         ),
-                      ),
-                      const SizedBox(height: 5),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: TextButton(
-                          onPressed: () {
-                            _loginBloc.add(
-                              LoginNavigateToForgetPasswordEvent(),
-                            );
-                          },
-                          child: Text(
-                            "Forget Password?",
-                            style: TextStyle(
-                              color: Color(0xFFA12F2F),
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
+                        const SizedBox(height: 5.0),
 
-                      ElevatedButton(
-                        onPressed: () {
-                          _loginBloc.add(
-                            LoginButtonClickedEvent(
-                              email: _emailController.text.trim(),
-                              password: _passwordController.text.trim(),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _loginBloc.add(
+                                  LoginButtonClickedEvent(
+                                    email: _emailController.text.trim(),
+                                    password: _passwordController.text.trim(),
+                                  ),
+                                );
+                              }
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                Colors.black,
+                              ),
+                              foregroundColor: WidgetStateProperty.all(
+                                Colors.white,
+                              ),
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              minimumSize: WidgetStateProperty.all(
+                                Size(100, 50),
+                              ),
                             ),
-                          );
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(
-                            Color(0xFFA12F2F),
+                            child: const Text("Login"),
                           ),
-                          foregroundColor: WidgetStateProperty.all(
-                            Colors.white,
-                          ),
-                          shape: WidgetStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          minimumSize: WidgetStateProperty.all(Size(100, 50)),
                         ),
-                        child: const Text("Login"),
-                      ),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          _loginBloc.add(LoginNavigateToSignUpButtonClicked());
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(
-                            Color(0xFFA12F2F),
-                          ),
-                          foregroundColor: WidgetStateProperty.all(
-                            Colors.white,
-                          ),
-                          shape: WidgetStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                        SizedBox(height: 10),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'New to ClassSync?',
+                              style: TextStyle(color: Colors.grey),
                             ),
-                          ),
-                          minimumSize: WidgetStateProperty.all(Size(100, 50)),
+                            TextButton(
+                              onPressed: () {
+                                _loginBloc.add(
+                                  LoginNavigateToSignUpButtonClicked(),
+                                );
+                              },
+                              child: Text('Sign Up'),
+                            ),
+                          ],
                         ),
-                        child: const Text("Sign Up"),
-                      ),
-                    ],
+                        SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20, left: 20),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Divider(
+                                  thickness: 1,
+                                  color: Colors.grey,
+                                  endIndent: 10,
+                                ),
+                              ),
+                              Text(
+                                'or continue as',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              Expanded(
+                                child: Divider(
+                                  thickness: 1,
+                                  color: Colors.grey,
+                                  indent: 10,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            OutlinedButton(
+                              style: ButtonStyle(
+                                shape: WidgetStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                minimumSize: WidgetStateProperty.all(
+                                  Size(100, 40),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: Text(
+                                'Teacher',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                            OutlinedButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Student',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              style: ButtonStyle(
+                                shape: WidgetStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                minimumSize: WidgetStateProperty.all(
+                                  Size(100, 40),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            default:
-              return const Center(child: Text("Unknown State"));
-          }
-        },
+                );
+              default:
+                return const Center(child: Text("Unknown State"));
+            }
+          },
+        ),
       ),
     );
   }
