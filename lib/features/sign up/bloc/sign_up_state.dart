@@ -17,3 +17,5 @@ class SignUpFailureState extends SignUpState {
 class SignUpLoadingState extends SignUpState {}
 
 class SignUpSuccessState extends SignUpActionState {}
+
+class SignUpNavigateToLogInState extends SignUpActionState{}

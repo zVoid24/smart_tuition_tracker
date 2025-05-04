@@ -12,6 +12,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool _rememberMe = false;
   final LoginBloc _loginBloc = LoginBloc();
   final _formKey = GlobalKey<FormState>();
   bool isObscured = true;
@@ -23,14 +24,6 @@ class _LoginState extends State<Login> {
     _loginBloc.add(LoginInitialEvent());
     //precacheImage(AssetImage('assets/images/app_logo.png'), context);
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    // Now it's safe to use context here
-    precacheImage(AssetImage('assets/images/app_logo.png'), context);
   }
 
   @override
@@ -203,24 +196,41 @@ class _LoginState extends State<Login> {
                             ],
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: TextButton(
-                            onPressed: () {
-                              _loginBloc.add(
-                                LoginNavigateToForgetPasswordEvent(),
-                              );
-                            },
-                            child: Text(
-                              "Forget Password?",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: _rememberMe,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _rememberMe = value ?? false;
+                                    });
+                                  },
+                                ),
+                                const Text('Remember Me'),
+                              ],
+                            ),
+
+                            TextButton(
+                              onPressed: () {
+                                _loginBloc.add(
+                                  LoginNavigateToForgetPasswordEvent(),
+                                );
+                              },
+                              child: const Text(
+                                'Forget Password?',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                        const SizedBox(height: 5.0),
+                        const SizedBox(height: 15.0),
 
                         SizedBox(
                           width: double.infinity,
@@ -231,6 +241,7 @@ class _LoginState extends State<Login> {
                                   LoginButtonClickedEvent(
                                     email: _emailController.text.trim(),
                                     password: _passwordController.text.trim(),
+                                    rememberMe: _rememberMe
                                   ),
                                 );
                               }

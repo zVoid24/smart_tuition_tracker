@@ -11,6 +11,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc() : super(SignUpInitial()) {
     on<SignUpInitialEvent>(_onSignUpInitialEvent);
     on<SignUpButtonClicked>(_onSignUpButtonClicked);
+    on<SignUpNavigateToLogInEvent>(_onSignUpNavigateToLogInEvent);
   }
 
   FutureOr<void> _onSignUpInitialEvent(
@@ -36,5 +37,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       print('Error in signUp: $e');
       emit(SignUpFailureState(error: e.toString()));
     }
+  }
+
+  FutureOr<void> _onSignUpNavigateToLogInEvent(
+    SignUpNavigateToLogInEvent event,
+    Emitter<SignUpState> emit,
+  ) {
+    emit(SignUpNavigateToLogInState());
   }
 }

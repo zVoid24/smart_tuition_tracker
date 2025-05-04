@@ -38,7 +38,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(LoginLoadingState());
     final db = Authentication();
     try {
-      await db.signInWithEmail(email: event.email, password: event.password);
+      await db.signInWithEmail(
+        email: event.email,
+        password: event.password,
+        rememberMe: event.rememberMe,
+      );
       debugPrint("Logged in");
     } catch (e) {
       emit(LoginFailureState(error: e.toString()));

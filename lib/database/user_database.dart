@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smart_tuition_tracker/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Authentication {
   final _firebaseAuth = FirebaseAuth.instance;
@@ -8,10 +9,15 @@ class Authentication {
   Future<User?> signInWithEmail({
     required String email,
     required String password,
+    required bool rememberMe
   }) async {
     try {
       final UserCredential result = await _firebaseAuth
           .signInWithEmailAndPassword(email: email.trim(), password: password);
+      if (result.user != null) {
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setBool('remember_me', rememberMe);
+      }
       return result.user;
     } catch (e) {
       throw Exception('An unexpected error occurred during sign-in: $e');

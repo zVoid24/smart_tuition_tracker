@@ -13,6 +13,13 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> {
   final WrapperBloc _wrapperBloc = WrapperBloc();
+
+  @override
+  void initState() {
+    _wrapperBloc.add(WrapperInitialEvent());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<WrapperBloc, WrapperState>(

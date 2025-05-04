@@ -17,3 +17,5 @@ class SignUpButtonClicked extends SignUpEvent {
 }
 
 class SignUpInitialEvent extends SignUpEvent {}
+
+class SignUpNavigateToLogInEvent extends SignUpEvent{}
