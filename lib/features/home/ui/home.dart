@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_tuition_tracker/features/home/bloc/home_bloc.dart';
+import 'package:smart_tuition_tracker/features/home/ui/student_tile.dart';
 import 'package:smart_tuition_tracker/models/user.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class Home extends StatefulWidget {
   final UserInformation info;
@@ -17,7 +19,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _homeBloc.add(HomeInitialEvent());
+    _homeBloc.add(HomeInitialEvent(role: widget.info.role));
   }
 
   @override
@@ -29,34 +31,80 @@ class _HomeState extends State<Home> {
       },
       builder: (context, state) {
         switch (state.runtimeType) {
-          case HomeLoadedState:
-            return SingleChildScrollView(
-              padding: EdgeInsets.all(15),
-              child: Center(
+          case HomeLoadingState:
+            return Center(child: CircularProgressIndicator());
+          case HomeLoadedTeacherState:
+            return RefreshIndicator(
+              color: Colors.black,
+              onRefresh: () async {
+                _homeBloc.add(HomeInitialEvent(role: 'Teacher'));
+              },
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.all(25),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(widget.info.name),
-                          Text(widget.info.role),
-                        ],
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'My Students',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadiusDirectional.only(
-                          topStart: Radius.circular(15),
-                          topEnd: Radius.circular(15),
+                    ListView.builder(
+                      shrinkWrap:
+                          true, // Makes the ListView take only the space it needs
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount:
+                          (state as HomeLoadedTeacherState).students.length,
+                      itemBuilder: (context, index) {
+                        return StudentTile(info: (state).students[index]);
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.center,
+                      child: DottedBorder(
+                        dashPattern: [6, 3], // Dash length and gap
+                        borderType: BorderType.RRect,
+                        radius: Radius.circular(10),
+                        color: Colors.grey,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton(
+                            onPressed: () {},
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide.none,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              backgroundColor: Colors.grey[100],
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 10,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.add, color: Colors.black),
+                                SizedBox(width: 8),
+                                Text(
+                                  "Add New Student",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        color: Colors.green,
                       ),
                     ),
                   ],

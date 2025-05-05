@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_tuition_tracker/features/home/ui/home.dart';
 import 'package:smart_tuition_tracker/features/profile_settings/ui/profile_settings.dart';
+import 'package:smart_tuition_tracker/features/schedule/ui/schedule.dart';
 import 'package:smart_tuition_tracker/home%20screen/bloc/home_screen_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -40,8 +41,13 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       builder: (context, state) {
         if (state is HomeScreenLoadingState) {
-          return Center(
-            child: CircularProgressIndicator(backgroundColor: Colors.white),
+          return SizedBox(
+            height: double.infinity,
+            width: double.infinity,
+            child: Container(
+              color: Colors.white,
+              child: Center(child: CircularProgressIndicator()),
+            ),
           );
         }
         if (state is HomeScreenLoadedState) {
@@ -75,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
               } else if (selectedIndex == 1) {
                 return Center(child: Text('Inbox'));
               } else if (selectedIndex == 2) {
-                return Center(child: Text('Shedule'));
+                return Schedule();
               } else if (selectedIndex == 3) {
                 return Center(child: Text('Profile Screen'));
               }

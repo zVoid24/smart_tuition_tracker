@@ -5,4 +5,11 @@ abstract class HomeState {}
 
 class HomeInitial extends HomeState {}
 
-class HomeLoadedState extends HomeState{}
+class HomeLoadedTeacherState extends HomeState {
+  final List<Student> students;
+  HomeLoadedTeacherState({required this.students});
+}
+
+class HomeLoadedStudentState extends HomeState {}
+
+class HomeLoadingState extends HomeState{}
