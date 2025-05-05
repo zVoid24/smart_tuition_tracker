@@ -7,3 +7,4 @@ class HomeScreenInitialEvent extends HomeScreenEvent{}
 
 class HomeScreenLogOutEvent extends HomeScreenEvent{}
 
+class HomeScreenNavigateToProfileSettingsEvent extends HomeScreenEvent{}

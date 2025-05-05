@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_tuition_tracker/features/forget%20password/ui/forget_password.dart';
 import 'package:smart_tuition_tracker/features/login/bloc/login_bloc.dart';
 import 'package:smart_tuition_tracker/features/sign%20up/ui/sign_up.dart';
+import 'package:smart_tuition_tracker/home%20screen/ui/home_screen.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -38,6 +39,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: BlocConsumer<LoginBloc, LoginState>(
           bloc: _loginBloc,
           listenWhen:
@@ -62,6 +64,18 @@ class _LoginState extends State<Login> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ForgetPassword()),
+              );
+            } else if (state is LoginSuccessState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Logged in'),
+                  duration: Duration(seconds: 1),
+                ),
+              );
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                (_) => false,
               );
             }
           },
@@ -203,6 +217,8 @@ class _LoginState extends State<Login> {
                             Row(
                               children: [
                                 Checkbox(
+                                  activeColor: Colors.black,
+                                  checkColor: Colors.white,
                                   value: _rememberMe,
                                   onChanged: (value) {
                                     setState(() {
@@ -241,7 +257,7 @@ class _LoginState extends State<Login> {
                                   LoginButtonClickedEvent(
                                     email: _emailController.text.trim(),
                                     password: _passwordController.text.trim(),
-                                    rememberMe: _rememberMe
+                                    rememberMe: _rememberMe,
                                   ),
                                 );
                               }
@@ -333,10 +349,6 @@ class _LoginState extends State<Login> {
                             ),
                             OutlinedButton(
                               onPressed: () {},
-                              child: Text(
-                                'Student',
-                                style: TextStyle(color: Colors.black),
-                              ),
                               style: ButtonStyle(
                                 shape: WidgetStateProperty.all(
                                   RoundedRectangleBorder(
@@ -346,6 +358,10 @@ class _LoginState extends State<Login> {
                                 minimumSize: WidgetStateProperty.all(
                                   Size(100, 40),
                                 ),
+                              ),
+                              child: Text(
+                                'Student',
+                                style: TextStyle(color: Colors.black),
                               ),
                             ),
                           ],

@@ -18,3 +18,5 @@ class HomeScreenLogOutFailure extends HomeScreenActionState {
   final String error;
   HomeScreenLogOutFailure({required this.error});
 }
+
+class HomeScreenNavigateToProfileSettingsState extends HomeScreenActionState{}

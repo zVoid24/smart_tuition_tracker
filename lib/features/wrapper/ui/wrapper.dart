@@ -29,7 +29,7 @@ class _WrapperState extends State<Wrapper> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Logged in!'),
-              backgroundColor: Colors.green,
+              duration: Duration(seconds: 1),
             ),
           );
         }

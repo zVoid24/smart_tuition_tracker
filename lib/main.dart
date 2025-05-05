@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-//import 'package:smart_tuition_tracker/database/authentication.dart';
+//import 'package:smart_tuition_tracker/database/user_database.dart';
 import 'package:smart_tuition_tracker/features/wrapper/ui/wrapper.dart';
 
 void main() async {
@@ -10,11 +10,28 @@ void main() async {
   runApp(
     MaterialApp(
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: Colors.black,
+          refreshBackgroundColor: Colors.white,
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+          selectedIconTheme: IconThemeData(color: Colors.black),
+          unselectedIconTheme: IconThemeData(color: Colors.grey),
+          selectedItemColor: Colors.black,
+          selectedLabelStyle: TextStyle(color: Colors.black),
+          unselectedLabelStyle: TextStyle(color: Colors.grey),
+        ),
         // Define AppBar color
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.black, // AppBar background color
-          foregroundColor: Colors.white, // AppBar text/icon color
-          titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          backgroundColor: Colors.white, // AppBar background color
+          foregroundColor: Colors.black, // AppBar text/icon color
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.w300,
+            fontSize: 25,
+            color: Colors.black,
+          ),
         ),
         // Define Button styles
         elevatedButtonTheme: ElevatedButtonThemeData(

@@ -9,7 +9,7 @@ class Authentication {
   Future<User?> signInWithEmail({
     required String email,
     required String password,
-    required bool rememberMe
+    required bool rememberMe,
   }) async {
     try {
       final UserCredential result = await _firebaseAuth
@@ -110,6 +110,8 @@ class Authentication {
   Future<void> logOut() async {
     try {
       await _firebaseAuth.signOut();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('remember_me');
     } catch (e) {
       throw (e.toString());
     }

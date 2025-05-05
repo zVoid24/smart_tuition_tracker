@@ -12,6 +12,9 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
   HomeScreenBloc() : super(HomeScreenInitial()) {
     on<HomeScreenInitialEvent>(_onHomeScreenInitialEvent);
     on<HomeScreenLogOutEvent>(_onHomeScreenLogOutEvent);
+    on<HomeScreenNavigateToProfileSettingsEvent>(
+      _onHomeScreenNavigateToProfileSettingsEvent,
+    );
   }
 
   FutureOr<void> _onHomeScreenInitialEvent(
@@ -35,5 +38,12 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
     } catch (e) {
       emit(HomeScreenLogOutFailure(error: e.toString()));
     }
+  }
+
+  FutureOr<void> _onHomeScreenNavigateToProfileSettingsEvent(
+    HomeScreenNavigateToProfileSettingsEvent event,
+    Emitter<HomeScreenState> emit,
+  ) {
+    emit(HomeScreenNavigateToProfileSettingsState());
   }
 }

@@ -44,6 +44,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         rememberMe: event.rememberMe,
       );
       debugPrint("Logged in");
+      emit(LoginSuccessState());
     } catch (e) {
       emit(LoginFailureState(error: e.toString()));
     }

@@ -9,3 +9,5 @@ class ResetPasswordButtonClickedEvent extends ForgetPasswordEvent {
   final String email;
   ResetPasswordButtonClickedEvent({required this.email});
 }
+
+class ForgetPasswordNavigateToLogIn extends ForgetPasswordEvent{}

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_tuition_tracker/features/login/ui/login.dart';
 import 'package:smart_tuition_tracker/features/sign%20up/bloc/sign_up_bloc.dart';
 import 'package:smart_tuition_tracker/features/wrapper/ui/wrapper.dart';
 
@@ -46,6 +45,11 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+        ),
+        backgroundColor: Colors.white,
         body: BlocConsumer<SignUpBloc, SignUpState>(
           bloc: _signUpBloc,
           listenWhen:
@@ -106,10 +110,10 @@ class _SignUpState extends State<SignUp> {
                           children: [
                             OutlinedButton(
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
+                                backgroundColor: WidgetStateProperty.all(
                                   teacher_colorBack,
                                 ),
-                                foregroundColor: MaterialStateProperty.all(
+                                foregroundColor: WidgetStateProperty.all(
                                   teacher_colorText,
                                 ),
                                 shape: WidgetStateProperty.all(
@@ -134,10 +138,10 @@ class _SignUpState extends State<SignUp> {
                             ),
                             OutlinedButton(
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
+                                backgroundColor: WidgetStateProperty.all(
                                   student_colorBack,
                                 ),
-                                foregroundColor: MaterialStateProperty.all(
+                                foregroundColor: WidgetStateProperty.all(
                                   student_colorText,
                                 ),
                                 shape: WidgetStateProperty.all(

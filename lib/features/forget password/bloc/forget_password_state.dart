@@ -17,3 +17,5 @@ class ForgetPasswordFailure extends ForgetPasswordActionState {
   final String error;
   ForgetPasswordFailure({required this.error});
 }
+
+class ForgetPasswordNavigateToLogInState  extends ForgetPasswordActionState{}

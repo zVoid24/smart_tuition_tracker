@@ -12,6 +12,7 @@ class ForgetPasswordBloc
   ForgetPasswordBloc() : super(ForgetPasswordInitial()) {
     on<ForgetPasswordInitialEvent>(_onForgetPasswordInitial);
     on<ResetPasswordButtonClickedEvent>(_onResetPasswordButtonClickedEvent);
+    on<ForgetPasswordNavigateToLogIn>(_onForgetPasswordNavigateToLogIn);
   }
 
   FutureOr<void> _onForgetPasswordInitial(
@@ -34,5 +35,12 @@ class ForgetPasswordBloc
     } catch (e) {
       emit(ForgetPasswordFailure(error: e.toString()));
     }
+  }
+
+  FutureOr<void> _onForgetPasswordNavigateToLogIn(
+    ForgetPasswordNavigateToLogIn event,
+    Emitter<ForgetPasswordState> emit,
+  ) {
+    emit(ForgetPasswordNavigateToLogInState());
   }
 }
