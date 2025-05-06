@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_tuition_tracker/features/schedule/bloc/schedule_bloc.dart';
+import 'package:smart_tuition_tracker/features/schedule/ui/schedule_tile.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Schedule extends StatefulWidget {
@@ -39,6 +40,7 @@ class _ScheduleState extends State<Schedule> {
           case ScheduleLoadingState:
             return Center(child: CircularProgressIndicator());
           case ScheduleLoadedState:
+            print((state as ScheduleLoadedState).schedules);
             return ListView(
               children: [
                 Padding(
@@ -92,6 +94,11 @@ class _ScheduleState extends State<Schedule> {
                         _selectedDay = selectedDay;
                         _focusedDay = focusedDay;
                       });
+                      print(_selectedDay?.weekday);
+                      print(_focusedDay?.weekday);
+                      _scheduleBloc.add(
+                        ScheduleDateClickEvent(weekDay: _selectedDay!.weekday),
+                      );
                     },
 
                     selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
@@ -128,9 +135,21 @@ class _ScheduleState extends State<Schedule> {
                     ),
                   ),
                 ),
-                Text('data'),
-                Text('data'),
-                Text('data'),
+                SizedBox(height: 20),
+                if (state.schedules.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: state.schedules.length,
+                      itemBuilder: (context, index) {
+                        return ScheduleTile(
+                          studentSchedule: state.schedules[index],
+                        );
+                      },
+                    ),
+                  ),
               ],
             );
           default:

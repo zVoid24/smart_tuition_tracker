@@ -1,7 +1,6 @@
 class StudentSchedule {
   final String name;
   final String time;
-
   StudentSchedule({
     required this.name,
     required this.time,
