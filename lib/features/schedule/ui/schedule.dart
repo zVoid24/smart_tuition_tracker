@@ -45,7 +45,7 @@ class _ScheduleState extends State<Schedule> {
               children: [
                 Padding(
                   padding: EdgeInsets.all(15),
-                  child: Container(
+                  child: SizedBox(
                     height: 40,
                     child: TextFormField(
                       decoration: InputDecoration(
@@ -95,7 +95,7 @@ class _ScheduleState extends State<Schedule> {
                         _focusedDay = focusedDay;
                       });
                       print(_selectedDay?.weekday);
-                      print(_focusedDay?.weekday);
+                      print(_focusedDay.weekday);
                       _scheduleBloc.add(
                         ScheduleDateClickEvent(weekDay: _selectedDay!.weekday),
                       );
@@ -108,7 +108,7 @@ class _ScheduleState extends State<Schedule> {
                     lastDay: DateTime.utc(2030, 3, 14),
                     startingDayOfWeek: StartingDayOfWeek.saturday,
                     eventLoader: (day) {
-                      if ((state as ScheduleLoadedState).weekDay.contains(
+                      if ((state).weekDay.contains(
                         day.weekday,
                       )) {
                         return ['Marked'];

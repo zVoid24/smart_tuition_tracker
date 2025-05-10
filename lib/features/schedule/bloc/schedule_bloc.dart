@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smart_tuition_tracker/database/teacher_database.dart';
-import 'package:smart_tuition_tracker/models/dayschedule.dart';
 import 'package:smart_tuition_tracker/models/student_schedule.dart';
 
 part 'schedule_event.dart';
